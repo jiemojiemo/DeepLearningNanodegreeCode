@@ -31,25 +31,27 @@ for e in range(epochs):
     for x, y in zip(features.values, targets):
         # Loop through all records, x is the input, y is the target
 
-        # Note: We haven't included the h variable from the previous
-        #       lesson. You can add it if you want, or you can calculate
-        #       the h together with the output
+        # Activation of the output unit
+        #   Notice we multiply the inputs and the weights here
+        #   rather than storing h as a separate variable
+        output = sigmoid(np.dot(x, weights))
 
-        # TODO: Calculate the output
-        output = None
+        # The error, the target minus the network output
+        error = y - output
 
-        # TODO: Calculate the error
-        error = None
+        # The error term
+        #   Notice we calulate f'(h) here instead of defining a separate
+        #   sigmoid_prime function. This just makes it faster because we
+        #   can re-use the result of the sigmoid function stored in
+        #   the output variable
+        error_term = error * output * (1 - output)
 
-        # TODO: Calculate the error term
-        error_term = None
+        # The gradient descent step, the error times the gradient times the inputs
+        del_w += error_term * x
 
-        # TODO: Calculate the change in weights for this sample
-        #       and add it to the total weight change
-        del_w += 0
-
-    # TODO: Update weights using the learning rate and the average change in weights
-    weights += 0
+    # Update the weights here. The learning rate times the
+    # change in weights, divided by the number of records to average
+    weights += learnrate * del_w / n_records
 
     # Printing out the mean square error on the training set
     if e % (epochs / 10) == 0:
